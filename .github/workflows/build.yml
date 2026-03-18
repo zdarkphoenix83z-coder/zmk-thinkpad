@@ -37,7 +37,7 @@ jobs:
       - name: Build firmware
         run: |
           cd zmk
-          west build -s app -b nice_nano_v2 -- -DZMK_CONFIG=app/config
+          west build -s app -- -DZMK_CONFIG=app/config
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
