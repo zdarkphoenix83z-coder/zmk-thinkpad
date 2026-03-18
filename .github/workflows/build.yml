@@ -27,7 +27,7 @@ jobs:
 
       - name: Init west
         run: |
-          west init zmk-workspace
+          west init -m https://github.com/zmkfirmware/zmk.git zmk-workspace
           cd zmk-workspace
           west update
 
