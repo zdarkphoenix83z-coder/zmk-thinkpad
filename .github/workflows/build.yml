@@ -12,6 +12,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Clone ZMK source
+        run: |
+          git clone https://github.com/zmkfirmware/zmk.git
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -22,23 +26,20 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Init ZMK workspace
+      - name: Setup west
         run: |
-          rm -rf zmk
-          git clone https://github.com/zmkfirmware/zmk.git
           cd zmk
           west init -l app
           west update
 
       - name: Copy config
         run: |
-          mkdir -p zmk/config
-          cp -r config/* zmk/config/
+          cp -r config zmk/config
 
       - name: Build firmware
         run: |
           cd zmk
-          west build -s app -- -DZMK_CONFIG=config
+          west build -s app -b nice_nano_v2 -- -DZMK_CONFIG=config
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
