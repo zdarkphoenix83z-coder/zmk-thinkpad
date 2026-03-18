@@ -25,11 +25,13 @@ jobs:
       - name: Init ZMK workspace (HARD FIX)
         run: |
           rm -rf zmk
-          west init zmk
-          cd zmk
-          west config manifest.url https://github.com/zmkfirmware/zmk.git
-          west config manifest.revision main
-          west update
+          - name: Init ZMK workspace (FINAL FIX)
+            run: |
+              rm -rf zmk
+              git clone https://github.com/zmkfirmware/zmk.git
+              cd zmk
+              west init -l app
+              west update
 
       - name: Copy config
         run: |
