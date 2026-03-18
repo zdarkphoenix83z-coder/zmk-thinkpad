@@ -1,4 +1,4 @@
-name: ZMK Build
+name: Build ZMK Firmware
 
 on:
   push:
@@ -6,43 +6,29 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Clone ZMK source
-        run: |
-          git clone https://github.com/zmkfirmware/zmk.git
+      - uses: actions/setup-python@v5
 
-      - name: Install dependencies
-        run: |
+      - run: |
           sudo apt update
           sudo apt install -y git cmake ninja-build gperf \
           ccache dfu-util device-tree-compiler wget \
           python3-pip python3-setuptools python3-wheel xz-utils file make gcc gcc-multilib
 
-      - name: Install west
-        run: pip3 install west
+      - run: pip3 install west
 
-      - name: Setup west
-        run: |
-          cd zmk
-          west init -l app
+      - run: |
+          west init -l config
           west update
 
-      - name: Copy config
-        run: |
-          cp -r config zmk/config
+      - run: |
+          west build -b nice_nano_v2 app
 
-      - name: Build firmware
-        run: |
-          cd zmk
-          west build -s app -b nice_nano_v2 -- -DZMK_CONFIG=config
-
-      - name: Upload firmware
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: firmware
-          path: zmk/build/zephyr/zmk.uf2
+          path: build/zephyr/zmk.uf2
