@@ -22,7 +22,7 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Init ZMK workspace (HARD FIX)
+      - name: Init ZMK workspace
         run: |
           rm -rf zmk
           - name: Init ZMK workspace (FINAL FIX)
