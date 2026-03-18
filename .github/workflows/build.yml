@@ -12,10 +12,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Clone ZMK source
-        run: |
-          git clone https://github.com/zmkfirmware/zmk.git
-
       - name: Install dependencies
         run: |
           sudo apt update
@@ -26,10 +22,10 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Setup west
+      - name: Init ZMK workspace (ĐÚNG CÁCH)
         run: |
+          west init -m https://github.com/zmkfirmware/zmk.git zmk
           cd zmk
-          west init -l app
           west update
 
       - name: Copy config
