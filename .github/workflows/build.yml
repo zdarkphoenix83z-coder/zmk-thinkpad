@@ -22,11 +22,13 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Init ZMK workspace (FIX)
+      - name: Init ZMK workspace (HARD FIX)
         run: |
           rm -rf zmk
-          west init -m https://github.com/zmkfirmware/zmk.git --mr main zmk
+          west init zmk
           cd zmk
+          west config manifest.url https://github.com/zmkfirmware/zmk.git
+          west config manifest.revision main
           west update
 
       - name: Copy config
