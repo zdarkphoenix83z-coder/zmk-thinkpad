@@ -9,10 +9,14 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install deps
+      - name: Clone ZMK source
+        run: |
+          git clone https://github.com/zmkfirmware/zmk.git
+
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y git cmake ninja-build gperf \
@@ -22,22 +26,22 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Init workspace
+      - name: Setup west
         run: |
-          west init -m https://github.com/zmkfirmware/zmk.git --mr main zmk
           cd zmk
+          west init -l app
           west update
 
       - name: Copy config
         run: |
-          cp -r ../config zmk/app/
+          cp -r config zmk/app/config
 
-      - name: Build
+      - name: Build firmware
         run: |
           cd zmk
           west build -s app -b nice_nano_v2 -- -DZMK_CONFIG=app/config
 
-      - name: Upload
+      - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
           name: firmware
