@@ -34,12 +34,12 @@ jobs:
 
       - name: Copy config
         run: |
-          cp -r config zmk/config
+          cp -r config zmk/app/config
 
       - name: Build firmware
         run: |
           cd zmk
-          west build -s app -b nice_nano_v2 -- -DZMK_CONFIG=app/config
+          west build -s app -- -DZMK_CONFIG=app/config
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
