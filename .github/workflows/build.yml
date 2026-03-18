@@ -1,4 +1,4 @@
-name: Build ZMK Firmware
+name: ZMK Build
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout config
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -25,19 +25,23 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Init ZMK
+      - name: Init west
         run: |
-          west init -m https://github.com/zmkfirmware/zmk.git
-          cd zmk
+          west init zmk-workspace
+          cd zmk-workspace
           west update
 
-      - name: Build firmware
+      - name: Copy config
         run: |
-          cd zmk
-          west build -s app -b nice_nano_v2 -- -DZMK_CONFIG=../config
+          cp -r ../config zmk-workspace/config
+
+      - name: Build
+        run: |
+          cd zmk-workspace
+          west build -s zmk/app -b nice_nano_v2 -- -DZMK_CONFIG=config
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
           name: firmware
-          path: zmk/build/zephyr/zmk.uf2
+          path: zmk-workspace/build/zephyr/zmk.uf2
