@@ -33,7 +33,7 @@ jobs:
 
       - name: Copy config
         run: |
-          cp -r ../config zmk-workspace/config
+          cp -r config zmk-workspace/config
 
       - name: Build
         run: |
