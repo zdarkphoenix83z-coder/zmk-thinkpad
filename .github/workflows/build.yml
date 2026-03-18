@@ -22,9 +22,10 @@ jobs:
       - name: Install west
         run: pip3 install west
 
-      - name: Init ZMK workspace (ĐÚNG CÁCH)
+      - name: Init ZMK workspace (FIX)
         run: |
-          west init -m https://github.com/zmkfirmware/zmk.git zmk
+          rm -rf zmk
+          west init -m https://github.com/zmkfirmware/zmk.git --mr main zmk
           cd zmk
           west update
 
