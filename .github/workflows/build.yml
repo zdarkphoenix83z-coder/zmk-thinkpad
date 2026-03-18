@@ -25,13 +25,10 @@ jobs:
       - name: Init ZMK workspace
         run: |
           rm -rf zmk
-          - name: Init ZMK workspace (FINAL FIX)
-            run: |
-              rm -rf zmk
-              git clone https://github.com/zmkfirmware/zmk.git
-              cd zmk
-              west init -l app
-              west update
+          git clone https://github.com/zmkfirmware/zmk.git
+          cd zmk
+          west init -l app
+          west update
 
       - name: Copy config
         run: |
