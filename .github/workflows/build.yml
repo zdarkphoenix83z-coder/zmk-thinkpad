@@ -32,7 +32,8 @@ jobs:
 
       - name: Copy config
         run: |
-          cp -r config zmk/config
+          mkdir -p zmk/config
+          cp -r config/* zmk/config/
 
       - name: Build firmware
         run: |
